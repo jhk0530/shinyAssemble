@@ -1,7 +1,10 @@
+if(!require("shiny")) install.packages('shiny')
+if(!require("shinyCyJS")) remotes::install_github('jhk0530/shinyCyJS')
+if(!require("shinymaterial")) install.packages("shinymaterial")
+
 library(shinyCyJS)
 library(shiny)
 library(shinymaterial)
-library(styler)
 
 exampleCode = function(){'# Define UI for app that draws a histogram ----
             ui <- fluidPage(
@@ -427,8 +430,7 @@ server = function(input, output, session){
 
   observeEvent(input$btn, {
     if(input$btn == 0){ return(NULL) }
-    code = styler::style_text(input$txt)
-    code = strsplit(code,split = '\n')[[1]]
+    code = strsplit(input$txt,split = '\n')[[1]]
 
     widgets = myf(code)
     myfres = myf2(widgets)
@@ -437,4 +439,4 @@ server = function(input, output, session){
   })
 }
 
-# shinyApp(ui = ui(), server = server, options = list(launch.browser = TRUE))
+shinyApp(ui = ui(), server = server, options = list(launch.browser = TRUE))
