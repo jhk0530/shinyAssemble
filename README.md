@@ -1,5 +1,4 @@
 # :yellow_heart: shinyAssemble
-<hr>
 
 
 shinyAssemble reads Shiny applications code ( one file `app.R` with `ui`, `server` ) <br>
