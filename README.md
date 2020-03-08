@@ -1,4 +1,4 @@
-# :yellow_heart: shinyAssemble
+# :yellow_heart: shinyAssemble <img src = 'shinyAssemble.png' width = 120 align = 'right'></img>
 
 
 shinyAssemble reads Shiny applications code ( one file `app.R` with `ui`, `server` ) <br>
