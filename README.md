@@ -19,167 +19,97 @@ shinyAssemble()
 
 ```
 
-## [Example, Hello Shiny](https://shiny.rstudio.com/articles/basics.html) 
- 
-![image](https://user-images.githubusercontent.com/6457691/76163323-6b305e80-6188-11ea-8a5e-acab60e8d788.png)
- 
- 
+### :page_facing_up: How to Use
+
+1. Give code in code area in left.
+2. Select color options in right-top.
+3. push `investigate` button.
+
+4. push `module` button. (optional) 
+
+## [Example, Shiny Text](https://shiny.rstudio.com/articles/basics.html) 
+
+![image](https://user-images.githubusercontent.com/6457691/76185995-41247e00-6214-11ea-92c2-0fbcc07869f4.png)
+
+
 ### Result
-![image](https://user-images.githubusercontent.com/6457691/76163068-6e2a4f80-6186-11ea-8382-951f5ac82ab9.png)
+![image](https://user-images.githubusercontent.com/6457691/76186023-65805a80-6214-11ea-93df-dc2fa5f3ea8e.png)
 
  
-### Codes
+### Codes (prepared in Shiny App)
  
  ```R
- # Define UI for app that draws a histogram ----
-ui <- fluidPage(
-
-  # App title ----
-  titlePanel("Hello Shiny!"),
-
-  # Sidebar layout with input and output definitions ----
-  sidebarLayout(
-
-    # Sidebar panel for inputs ----
-    sidebarPanel(
-
-      # Input: Slider for the number of bins ----
-      sliderInput(
-        inputId = "bins",
-        label = "Number of bins:",
-        min = 1,
-        max = 50,
-        value = 30
-      )
-    ),
-
-    # Main panel for displaying outputs ----
-    mainPanel(
-
-      # Output: Histogram ----
-      plotOutput(outputId = "distPlot")
-    )
-  )
-)
-
-# Define server logic required to draw a histogram ----
-server <- function(input, output) {
-
-  # Histogram of the Old Faithful Geyser Data ----
-  # with requested number of bins
-  # This expression that generates a histogram is wrapped in a call
-  # to renderPlot to indicate that:
-  #
-  # 1. It is "reactive" and therefore should be automatically
-  #    re-executed when inputs (input$bins) change
-  # 2. Its output type is a plot
-  output$distPlot <- renderPlot({
-    x <- faithful$waiting
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
-
-    hist(x,
-      breaks = bins, col = "#75AADB", border = "white",
-      xlab = "Waiting time to next eruption (in mins)",
-      main = "Histogram of waiting times"
-    )
-  })
-}
-
- ```
-
-------
-
-<details>
- 
- <summary>
-
- ### [Example 2](https://shiny.rstudio.com/articles/basics.html) 
-
-</summary>
- 
- ### Codes
- 
- ``` R
  # Define UI for dataset viewer app ----
 ui <- fluidPage(
 
-  # App title ----
-  titlePanel("Shiny Text"),
+ # App title ----
+ titlePanel("Shiny Text"),
 
-  # Sidebar layout with a input and output definitions ----
-  sidebarLayout(
+ # Sidebar layout with a input and output definitions ----
+ sidebarLayout(
 
-    # Sidebar panel for inputs ----
-    sidebarPanel(
+   # Sidebar panel for inputs ----
+   sidebarPanel(
 
-      # Input: Selector for choosing dataset ----
-      selectInput(
-        inputId = "dataset",
-        label = "Choose a dataset:",
-        choices = c("rock", "pressure", "cars")
-      ),
+     # Input: Selector for choosing dataset ----
+     selectInput(
+       inputId = "dataset",
+       label = "Choose a dataset:",
+       choices = c("rock", "pressure", "cars")
+     ),
 
-      # Input: Numeric entry for number of obs to view ----
-      numericInput(
-        inputId = "obs",
-        label = "Number of observations to view:",
-        value = 10
-      )
-    ),
+     # Input: Numeric entry for number of obs to view ----
+     numericInput(
+       inputId = "obs",
+       label = "Number of observations to view:",
+       value = 10
+     )
+   ),
 
-    # Main panel for displaying outputs ----
-    mainPanel(
+   # Main panel for displaying outputs ----
+   mainPanel(
 
-      # Output: Verbatim text for data summary ----
-      verbatimTextOutput("summary"),
+     # Output: Verbatim text for data summary ----
+     verbatimTextOutput("summary"),
 
-      # Output: HTML table with requested number of observations ----
-      tableOutput("view")
-    )
-  )
+     # Output: HTML table with requested number of observations ----
+     tableOutput("view")
+   )
+ )
 )
 
 # Define server logic to summarize and view selected dataset ----
 server <- function(input, output) {
 
-  # Return the requested dataset ----
-  datasetInput <- reactive({
-    switch(input$dataset,
-      "rock" = rock,
-      "pressure" = pressure,
-      "cars" = cars
-    )
-  })
+ # Return the requested dataset ----
+ datasetInput <- reactive({
+   switch(input$dataset,
+     "rock" = rock,
+     "pressure" = pressure,
+     "cars" = cars
+   )
+ })
 
-  # Generate a summary of the dataset ----
-  output$summary <- renderPrint({
-    dataset <- datasetInput()
-    summary(dataset)
-  })
+ # Generate a summary of the dataset ----
+ output$summary <- renderPrint({
+   dataset <- datasetInput()
+   summary(dataset)
+ })
 
-  # Show the first "n" observations ----
-  output$view <- renderTable({
-    head(datasetInput(), n = input$obs)
-  })
+ # Show the first "n" observations ----
+ output$view <- renderTable({
+   head(datasetInput(), n = input$obs)
+ })
 }
-
  ```
- 
- ### Result
- 
- ![image](https://user-images.githubusercontent.com/6457691/76163091-ab8edd00-6186-11ea-8411-7b97b168ef3d.png)
 
- 
-</details>
- 
- 
 ------
 
 
 <details>
  <summary> 
  
- ### [Example 3](https://shiny.rstudio.com/articles/build.html) 
+ ### [Example 2 Miles per Gallon](https://shiny.rstudio.com/articles/build.html) 
  
  </summary>
  
@@ -261,18 +191,26 @@ server <- function(input, output) {
  
  ### Result
  
- ![image](https://user-images.githubusercontent.com/6457691/76163108-cb260580-6186-11ea-8580-9d0e377f153b.png)
-
+ ![image](https://user-images.githubusercontent.com/6457691/76186147-bc862f80-6214-11ea-9b9b-b8a25e22ea24.png)
  
  </details>
  
- 
- 
+  
 ### :paperclip: Dependency
 
 * [shiny](https://github.com/rstudio/shiny) - 1.4.0
 * [shinyCyJS](https://github.com/jhk0530/shinyCyJS) - 0.0.11
 * [shinymaterial](https://github.com/ericrayanderson/shinymaterial) - 1.0.1
+* [colourpicker](https://github.com/daattali/colourpicker) - 1.0
+
+* [shinyjs](https://github.com/daattali/shinyjs) - 1.1
+
+### :exclamation:	Impotant
+
+- If you load both `colourpicker` and `shinyjs` library, they will make collision. `shinyAssemble` only needs to load `colourpicker` and use ```R  shinyjs::runjs() ``` instead load `shinyjs`
+
+- use `styled code`, (more specifically I used tidyverse style with `styler`)
+
 
 ### :blush: Authors
 
