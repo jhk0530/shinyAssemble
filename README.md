@@ -29,12 +29,12 @@ shinyAssemble()
 
 ## [Example, Shiny Text](https://shiny.rstudio.com/articles/basics.html) 
 
-![I](https://user-images.githubusercontent.com/6457691/76186983-68c91580-6217-11ea-93bd-6f946b4920e4.gif)
 
+![image](https://user-images.githubusercontent.com/6457691/76185995-41247e00-6214-11ea-92c2-0fbcc07869f4.png)
 
 
 ### Result
-![image](https://user-images.githubusercontent.com/6457691/76186023-65805a80-6214-11ea-93df-dc2fa5f3ea8e.png)
+![I](https://user-images.githubusercontent.com/6457691/76186983-68c91580-6217-11ea-93bd-6f946b4920e4.gif)
 
  
 ### Codes (prepared in Shiny App)
