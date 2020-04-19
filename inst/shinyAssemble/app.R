@@ -216,6 +216,7 @@ server <- function(input, output, session) {
       fI <- found("input", codes[i])
       fO <- found("output", codes[i])
       fR <- found("reactive", codes[i])
+
       # used xor to avoid server.
       if (xor(fI, fO)) {
         blocks <- detectWidget(codes, i)
@@ -234,9 +235,11 @@ server <- function(input, output, session) {
         if (verbose) cat(widget, "\n\n")
         bookmark <- blocks[length(blocks)]
       }
+
     }
     return(unique(widgets))
   }
+
   myf2 <- function(widgets, verbose = FALSE) {
     found <- function(pattern, text) {
       text <- tolower(text)
@@ -370,6 +373,17 @@ server <- function(input, output, session) {
             }
           }
 
+          if(length(source) ==0 ) { # exception 3
+            # output$Fun <- renderText({ asd(3, 4) })
+            for(j in 1:length(text)){
+              thisText <- text[j]
+              if(found('\\(', thisText) && found('\\)', thisText)){
+                source <- c(source, thisText)
+              }
+            }
+
+          }
+
           if (verbose) cat("target :", target, "method :", method, "source :", source, "\n")
 
           res[[length(res) + 1]] <- list(widget = "render", target = target, method = method, source = source)
@@ -393,6 +407,7 @@ server <- function(input, output, session) {
 
       cat("unknown type error please create issue on github\n")
     }
+    if(length(source)==0) cat("unknown type error please create issue on github\n")
     res = unique(res)
     return(res)
   }
@@ -405,7 +420,6 @@ server <- function(input, output, session) {
       thiswidget <- myf2res[[i]]
 
       if (thiswidget$widget == "input") {
-
 
         res[[length(res) + 1]] <- buildNode(
           id = thiswidget$id,
@@ -451,31 +465,103 @@ server <- function(input, output, session) {
       }
 
       if (thiswidget$widget == "reactive") {
-        res[[length(res) + 1]] <- buildNode(
-          id = thiswidget$target,
-          shape = "diamond",
-          borderColor = input$col5,
-          borderWidth = 5,
-          bgColor = "#FFFFFF",
-          labelColor = "#000000",
-          height = 75,
-          width = 75,
-          textbgOpacity = 1,
-          textBorderWidth = 2,
-          tooltip = thiswidget$type
-        )
 
-        res[[length(res) + 1]] <- buildEdge(
-          source = thiswidget$source,
-          target = thiswidget$target,
-          label = thiswidget$method,
-          curveStyle = "taxi",
-          lineColor = input$col4,
-          targetArrowShape = "triangle",
-          targetArrowColor = input$col4
-        )
+        targets <- thiswidget$target
+        sources <- thiswidget$source
+
+        # handled multiple target and source
+
+        for(i in 1:length(targets)){
+          targetItem <- targets[i]
+          res[[length(res) + 1]] <- buildNode(
+            id = targetItem,
+            shape = "diamond",
+            borderColor = input$col5,
+            borderWidth = 5,
+            bgColor = "#FFFFFF",
+            labelColor = "#000000",
+            height = 75,
+            width = 75,
+            textbgOpacity = 1,
+            textBorderWidth = 2,
+            tooltip = thiswidget$type
+          )
+        }
+
+        for(i in 1:length(sources)){
+          sourceItem = sources[i]
+          for(j in 1:length(targets)){
+            targetItem <- targets[j]
+            res[[length(res) + 1]] <- buildEdge(
+              source = sourceItem,
+              target = targetItem,
+              label = thiswidget$method,
+              curveStyle = "taxi",
+              lineColor = input$col4,
+              targetArrowShape = "triangle",
+              targetArrowColor = input$col4
+            )
+          }
+        }
+
       }
     }
+
+    CheckDefined <- function(element){
+      for(i in 1:length(res)){
+        if(res[[i]]$group=='nodes'){
+          if(res[[i]]$data$id == element) return(TRUE)
+        }
+      }
+      return(FALSE)
+    }
+
+    for(k in 1:length(res)){ # check all source are defined.
+      thisWidget <- res[[k]]
+      if(thisWidget$group =='edges'){
+        sources <- thisWidget$data$source
+        targets <- thisWidget$data$target
+        for(i in 1:length(sources)){
+          if(!CheckDefined(sources[i])){ # undetected element
+            res[[length(res) + 1]] <- buildNode(
+              id = sources[i],
+              shape = "star",
+              borderColor = '#e84118',
+              borderWidth = 5,
+              bgColor = "#FFFFFF",
+              labelColor = "#000000",
+              height = 75,
+              width = 75,
+              textbgOpacity = 1,
+              textBorderWidth = 2,
+              tooltip = sources[i]
+            )
+          }
+        }
+        for(i in 1:length(targets)){
+          if(!CheckDefined(targets[i])){ # undetected element
+            res[[length(res) + 1]] <- buildNode(
+              id = targets[i],
+              shape = "star",
+              borderColor = '#e84118',
+              borderWidth = 5,
+              bgColor = "#FFFFFF",
+              labelColor = "#000000",
+              height = 75,
+              width = 75,
+              textbgOpacity = 1,
+              textBorderWidth = 2,
+              tooltip = targets[i]
+            )
+          }
+        }
+
+
+      }
+
+    }
+
+
     return(res)
   }
 
