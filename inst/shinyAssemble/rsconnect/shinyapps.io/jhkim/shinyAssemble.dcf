@@ -5,8 +5,8 @@ account: jhkim
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 1919626
-bundleId: 2863210
+bundleId: 3033686
 url: https://jhkim.shinyapps.io/shinyAssemble/
-when: 1583733339.21856
+when: 1587282813.69795
 asMultiple: FALSE
 asStatic: FALSE
